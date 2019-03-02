@@ -5,6 +5,7 @@ from datetime import datetime
 from decimal import Decimal
 from oauth2client.service_account import ServiceAccountCredentials
 from requests import get
+from .config import API_KEY, API_SECRET
 
 DOC_URL = "https://docs.google.com/spreadsheets/d/1MyuGBuaNBrvh4k7KBASrA9rupL4JQrOIM5-IIlo4Ico/edit#gid=0"
 
@@ -16,14 +17,11 @@ scope = [
 ]
 
 credentials = ServiceAccountCredentials.from_json_keyfile_name(
-    '/home/art/Projects/Python/binance/src/creds/creds.json',
+    'binance/creds/creds.json',
     scope,
 )
 
 gc = gspread.authorize(credentials)
-
-API_KEY = 'V0nHzQkJg2xtEn9ZgQqdqZWyMFkvrTvc3cQWa2Vzn9SPek00ta1zGrqqgIpONShh'
-API_SECRET = 'qn9Y0pxWNm7QyCQt0hxEAaW12A02pnTPbwAStviGthtJWclw1oxaG6060PvILsYl'
 
 
 def get_estimated_value(client):
