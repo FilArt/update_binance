@@ -5,7 +5,7 @@ from datetime import datetime
 from decimal import Decimal
 from oauth2client.service_account import ServiceAccountCredentials
 from requests import get
-from .config import API_KEY, API_SECRET
+from secrets import API_KEY, API_SECRET
 
 DOC_URL = "https://docs.google.com/spreadsheets/d/1MyuGBuaNBrvh4k7KBASrA9rupL4JQrOIM5-IIlo4Ico/edit#gid=0"
 
@@ -17,7 +17,7 @@ scope = [
 ]
 
 credentials = ServiceAccountCredentials.from_json_keyfile_name(
-    'binance/creds/creds.json',
+    '../../creds/creds.json',
     scope,
 )
 
