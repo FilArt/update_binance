@@ -5,9 +5,7 @@ from datetime import datetime
 from decimal import Decimal
 from oauth2client.service_account import ServiceAccountCredentials
 from requests import get
-from secrets import API_KEY, API_SECRET
-
-DOC_URL = "https://docs.google.com/spreadsheets/d/1MyuGBuaNBrvh4k7KBASrA9rupL4JQrOIM5-IIlo4Ico/edit#gid=0"
+from secrets import API_KEY, API_SECRET, DOC_URL
 
 timezone = pytz.timezone("Europe/Moscow")
 
@@ -17,14 +15,17 @@ scope = [
 ]
 
 credentials = ServiceAccountCredentials.from_json_keyfile_name(
-    '../../creds/creds.json',
+    'path/to/creds/creds.json',
     scope,
 )
 
-gc = gspread.authorize(credentials)
+gc = gspread.authorize(credentials)  # google client
 
 
 def get_estimated_value(client):
+    """
+    Fetch estimated balance value.
+    """
     all_prices = {
         t['symbol']: Decimal(t['price'])
         for t in client.get_symbol_ticker()
@@ -42,13 +43,16 @@ def get_estimated_value(client):
 
 
 def btc_to_xxx(btc: Decimal, xxx: str):
+    """
+    Convert bitcoin to xxx currency.
+    """
     url = f"https://blockchain.info/tobtc?currency={xxx.upper()}&value=1"
     xxx_in_btc = 1 / Decimal(get(url).text) * btc
     return str(round(xxx_in_btc, 2))
 
 
 def main():
-    bc = Client(API_KEY, API_SECRET)
+    bc = Client(API_KEY, API_SECRET)  # binance client
     dt_now = datetime.now(pytz.timezone('Europe/Moscow'))
     btc = get_estimated_value(bc)
     row = (
